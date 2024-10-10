@@ -14,8 +14,6 @@ porterStemmer = PorterStemmer()
 from PIL import Image, ImageOps
 import io
 ######################################################################################
-paths_ = json.load(open("%s%s" % ("resources\\","paths.json")))
-######################################################################################
 def get_shape_location(slide, shape):
 	# Check if the shape is present on the slide
 	if shape not in slide.shapes:
@@ -105,7 +103,7 @@ def extract_content(pptx_file,getTxt,getIm,fId):
 
 						imageResized = pil_image.resize((new_width,new_height))
 						imageResized = imageResized.convert("RGB")
-						imageResized.save(os.path.join(paths_["content"]["images"], f"im_{imId}.jpg"))
+						imageResized.save(os.path.join(r"output/images/", f"im_{imId}.jpg"))
 						image_content.append(
 							{
 								"slideId":slideId,"imageId":imId,
@@ -119,12 +117,12 @@ def extract_content(pptx_file,getTxt,getIm,fId):
 	return text_content,image_content;
 ######################################################################################
 ######################################################################################
-textMiningResources_ = json.load(open("%s%s" % (paths_["00_resources"],"TextMining.json")))
+textMiningResources_ = json.load(open("%s%s" % (r"resources/","TextMining.json")))
 stopwords_ = textMiningResources_["nltk_resources"]["stopwords"]
-ledger_ = json.load(open("%s%s" % (r"resources\\","ledger.json")))
+ledger_ = json.load(open("%s%s" % (r"resources/","ledger.json")))
 ######################################################################################
 if __name__ == "__main__":
-	files_ = [f for f in listdir(paths_["projectDir"]) if isfile(join(paths_["projectDir"], f))]
+	files_ = [f for f in listdir(r"data/") if isfile(join(r"data/", f))]
 	for f in files_:
 		parse_f  = f.split(".")
 		if parse_f[-1] == "pptx":
@@ -134,7 +132,7 @@ if __name__ == "__main__":
 					id = key
 					break
 			try:
-				input_file =  "%s%s" % (paths_["projectDir"],f)
+				input_file =  "%s%s" % (r"data/",f)
 				extracted_content = extract_content(input_file,True,True,id)
 				manifest_ = {}
 				for content_ in extracted_content[0]:
@@ -194,6 +192,6 @@ if __name__ == "__main__":
 ######################################################################################
 			#ensure_ascii=False
 			with open(str(
-				"%s%s%s" % (paths_["content"]["manifests"],parse_f[0],"_manifest.json")
+				"%s%s%s" % (r"output/",parse_f[0],"_manifest.json")
 				), "w", encoding='utf-8') as json_manifest:
 				json_manifest.write(json.dumps(manifest_, indent=4))
