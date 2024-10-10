@@ -14,6 +14,7 @@ porterStemmer = PorterStemmer()
 from PIL import Image, ImageOps
 import io
 ######################################################################################
+######################################################################################
 def get_shape_location(slide, shape):
 	# Check if the shape is present on the slide
 	if shape not in slide.shapes:
